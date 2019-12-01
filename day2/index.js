@@ -2,7 +2,9 @@
 const program = require('commander');
 const inquirer = require('inquirer');
 let data=require('./number.json');
-let fs=require('fs')
+let fs=require('fs');
+let http=require('http');
+let address=8080;
 
 program
     .version('1.0.0')
@@ -10,6 +12,8 @@ program
     .option('-r,--remove')
     .option('--add-file')
     .option('login')
+    .option('http-server')
+    .option('-p,--open')
     .action((path, cmd) => {
         if (process.argv[2] === 'login') {
             inquirer.prompt(promptList).then(answers => {
@@ -45,9 +49,9 @@ program
             message:'请输入身份证号:',
             name:'number',
             // validate:function(val){
-                // if(!val.match(/^\d{18}$/)){
-                //     return '请输入正确的身份信息'
-                // }
+            //     if(!val.match(/^\d{18}$/)){
+            //         return '请输入正确的身份信息'
+            //     }
                
             // }
         }
@@ -78,4 +82,21 @@ if (program.add) console.log('add somthing')
 if (program.remove) console.log('remove something')
 if (program.addFile) console.log('张玉静 撒')
 
-// console.log('你好')
+if(program.httpServer){//http
+    http.createServer((req,res)=>{
+        res.end(fs.readFileSync('./a.html'))
+    }).listen(address,()=>{
+        console.log(address+'正在被监听')
+    })
+}
+if(program.open){//http 
+    address=process.argv[3]
+    http.createServer((req,res)=>{
+        res.end(fs.readFileSync('./a.html'))
+    }).listen(address,()=>{
+        console.log(address+'正在被监听')
+    })
+}else{
+    address=8080
+}
+
