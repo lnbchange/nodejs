@@ -28,7 +28,6 @@ router.get('/list',async (ctx,next)=>{//查看
             err:res
         }
     }
-    // ctx.body=[1,2,3]
 })
 
 router.post('/add',async (ctx,next)=>{//添加
