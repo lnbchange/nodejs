@@ -1,5 +1,5 @@
 const Controller=require('egg').Controller;
-
+const moment=require('moment')
 
 class scoreController extends Controller{
     /**
@@ -68,7 +68,7 @@ class scoreController extends Controller{
     /**
      * 修改成绩
      * post  /api/gradesedit
-     * 必须传递参数 id,theory,skill,students_number
+     * 必须传递参数 username,theory,skill,student_number
      * 成功code 2
      * 失败code 4
      */
@@ -179,7 +179,6 @@ class scoreController extends Controller{
         if(student_number){
            let result = await service.score.personslist(student_number);
         //    console.log(result);
-
            let theoryArr = []; //理论成绩
            let skillArr = []; //技能成绩
            let timeArr = [];  //时间
@@ -215,7 +214,7 @@ class scoreController extends Controller{
     async distribution(){
         let {ctx,service} = this;
         let arr = ['0-70','71-80','81-90','91-100'];
-        console.log(22)
+        // console.log(22)
         let source = [
             ['0-70'],
             ['71-80'],
@@ -231,7 +230,7 @@ class scoreController extends Controller{
             source[i].push(thoeryCount[0]['count(*)']);
             source[i].push(skillCount[0]['count(*)']);
         }
-        console.log(source)
+        // console.log(source)
         ctx.body = {
             code:2,
             data:source
@@ -242,6 +241,7 @@ class scoreController extends Controller{
     /**
      * 获取学生当天的个人成绩
      * get  api/student
+     * 必传参数 student_number
      */
     async student(){
         const {ctx,service}=this;
@@ -284,6 +284,44 @@ class scoreController extends Controller{
             ctx.body={
                 code:4,
                 error
+            }
+        }
+    }
+
+    /**
+     * 获取本月成材率 折线图
+     * get  /api/monthsuccess
+     */
+    async monthsuccess() {
+        let { ctx,service } = this;
+        let result = await service.score.every(); // 找所有记录
+        let count = await service.score.cunt()  //查长度     
+        let timeArr = [];  
+        for (let i = 0; i < result.length; i++) {           
+            timeArr.push(moment(result[i].time).format('YYYY-MM-DD'))
+        }
+        
+        let arr = [...new Set(timeArr)]  // 去重        
+        let a = []  //理论成绩
+        let b=[] //技能成绩
+        let time=[] //时间
+        for (let j = 0; j < arr.length; j++) {
+           
+            let theoryArr = await service.score.AllTheory(arr[j])//理论成绩
+           
+            let skillArr = await service.score.AllSkill(arr[j])//技能成绩
+  
+            a.push(theoryArr)
+            b.push(skillArr)         
+           
+            time.push(`${new Date(arr[j]).getMonth() + 1}-${new Date(arr[j]).getDate()}`)
+       
+            ctx.body = {
+                code: 2,
+                theory:a,
+                skill:b,
+                count: count[0]["count(*)"],
+                time            
             }
         }
     }

@@ -58,7 +58,7 @@ class userController extends Controller{
             try{
                 let hexPwd=ctx.helper.hex(password);//加密
                 let logindata= await service.user.login(student_number,hexPwd);//登录
-                let token=jwt.sign({student_number,password,roleId:logindata[0].role},'relic',{expiresIn:60*60});//token
+                let token=jwt.sign({student_number,password,roleId:logindata[0].role},'relic',{expiresIn:80*80});//token
                if(logindata.length){//登录
                     ctx.body={
                         code:2,
@@ -90,12 +90,12 @@ class userController extends Controller{
      * 失败code 4
      */
     async students(){
-        const {ctx,service}=this;
-        try{
-            let studentlist=await service.user.students();
+        const {ctx,service}=this;      
+        try{      
+            let studentlist=await service.user.students();     
             ctx.body={
                 code:2,
-                data:studentlist
+                data:studentlist    
             }
         }catch(error){
             ctx.body={

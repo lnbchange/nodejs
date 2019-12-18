@@ -6,6 +6,11 @@
 module.exports = app => {
   const { router, controller } = app;
   router.get('/', controller.home.index);
+
+  /**
+   * 用户接口
+   */
+
   //注册
   router.post('/api/register',controller.user.register);
   //登录
@@ -18,6 +23,13 @@ module.exports = app => {
   router.post('/api/remove',controller.user.remove);
   //修改学生信息
   router.post('/api/editstudent',controller.user.editstudent);
+  //返回页面
+   router.get('/api/menu',controller.user.menu);
+
+   /**
+    * 成绩接口
+    */
+
   //录入成绩
   router.post('/api/schoolgrades',controller.score.schoolgrades);
   //获取当天成绩列表
@@ -27,9 +39,7 @@ module.exports = app => {
   //模糊搜索
   router.get('/api/search',controller.score.search);
   //删除学生当天成绩
-  router.post('/api/delete',controller.score.delete);
-  //返回页面
-  router.get('/api/menu',controller.user.menu);
+  router.post('/api/delete',controller.score.delete); 
   //获取个人本月理论技能成绩
   router.get('/api/personslist',controller.score.personslist);
   //获取当天成绩分布图
@@ -38,4 +48,6 @@ module.exports = app => {
   router.get('/api/student',controller.score.student);
   //柄图
   router.get('/api/success',controller.score.success);
+  //当月成材率
+  router.get('/api/monthsuccess',controller.score.monthsuccess)
 };

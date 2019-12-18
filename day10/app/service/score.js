@@ -46,7 +46,6 @@ class ScoreService extends Service {
         let big = item.split('-')[1];
         let small = item.split('-')[0];
         //0-70  71-80  理论  技能
-
         let sql = 'select count(*) from gradetable where date_format(time,"%Y-%m-%d")=? and (';
 
         sql += `${type}<=${big} and ${type}>=${small})`;
@@ -69,6 +68,30 @@ class ScoreService extends Service {
         let time=ctx.helper.timer();
        return await this.app.mysql.query('select * from gradetable where date_format(time,"%Y-%m-%d")=?',[time])
       }
+    /**
+     * 获取全部人
+     */
+    async every() {
+        return this.app.mysql.query('select time from gradetable')
+    }
+    /**
+     * 查找人数
+     */
+    async cunt() {
+    return await this.app.mysql.query("select count(*) from userinfo where role!='1'")
+    } 
+    /**
+     * 查找当月成绩理论
+     */
+    async AllTheory(time) {
+        return await this.app.mysql.query(`SELECT count(*) from gradetable where theory>=90  and time=?`, [time])
+    }
+    /**
+     * 查找当月成绩技能
+     */
+    async AllSkill(time) {
+        return await this.app.mysql.query(`SELECT count(*) from gradetable where skill>=90  and time=?`, [time])
+    }
 }
 
 module.exports=ScoreService;

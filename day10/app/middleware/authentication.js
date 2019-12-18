@@ -10,12 +10,12 @@ module.exports=()=>{//权鉴
             ctx.info=jwt.verify(token,'relic');
             await next()
            }catch(error){
-               if(error.name==='JsonWebTokenError' || error.name==='TokenExpiredError'){
-                    ctx.status='401';
+               if(error.name==='JsonWebTokenError' || error.name==='TokenExpiredError'){                   
                     ctx.body={
                         code:4,
                         error
                     }
+                     ctx.status=401;
                }else{
                    ctx.body={
                        code:0,
