@@ -13,10 +13,9 @@ app.use(bodyparser());
 app.use(router.routes());
 
 router.get('/api/lookover',async (ctx,next)=>{//查看
-    let {pageNum=1,limit=3}=ctx.query;
-    let start=(pageNum-1)*limit;
+    let {user}=ctx.query;
     try{
-        let listdata=await query(`select * from userlist limit ${start},${limit}`)
+        let listdata=await query(`select * from userlist where user=?`,[user])
         ctx.body={
             code:0,
             msg:'页面启动成功',
@@ -67,6 +66,11 @@ router.post('/api/login',async (ctx,next)=>{//登录
                 code:0,
                 msg:'登录成功',
                 userobj
+            }
+        }else{
+            ctx.body={
+                code:1,
+                msg:'登录失败'
             }
         }
     }
