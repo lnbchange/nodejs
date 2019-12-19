@@ -223,10 +223,10 @@ class scoreController extends Controller{
         ]
 
         for(let i = 0;i<arr.length;i++){
-            console.log("===获取当天成绩分布图")
+            // console.log("===获取当天成绩分布图")
             let thoeryCount = await service.score.distribution('theory',arr[i]);
             let skillCount = await service.score.distribution('skill',arr[i]);
-            console.log("thoeryCount",thoeryCount,"skillCount",skillCount);
+            // console.log("thoeryCount",thoeryCount,"skillCount",skillCount);
             source[i].push(thoeryCount[0]['count(*)']);
             source[i].push(skillCount[0]['count(*)']);
         }
@@ -305,17 +305,12 @@ class scoreController extends Controller{
         let a = []  //理论成绩
         let b=[] //技能成绩
         let time=[] //时间
-        for (let j = 0; j < arr.length; j++) {
-           
-            let theoryArr = await service.score.AllTheory(arr[j])//理论成绩
-           
-            let skillArr = await service.score.AllSkill(arr[j])//技能成绩
-  
+        for (let j = 0; j < arr.length; j++) {           
+            let theoryArr = await service.score.AllTheory(arr[j])//理论成绩           
+            let skillArr = await service.score.AllSkill(arr[j])//技能成绩  
             a.push(theoryArr)
-            b.push(skillArr)         
-           
-            time.push(`${new Date(arr[j]).getMonth() + 1}-${new Date(arr[j]).getDate()}`)
-       
+            b.push(skillArr)     
+            time.push(`${new Date(arr[j]).getMonth() + 1}-${new Date(arr[j]).getDate()}`)       
             ctx.body = {
                 code: 2,
                 theory:a,

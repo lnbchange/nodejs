@@ -1,5 +1,5 @@
 let jwt=require('jsonwebtoken');
-module.exports=()=>{//权鉴
+module.exports=()=>{//鉴权
     return async (ctx,next)=>{
         let writeform=['/api/login','/api/register'];
         if(writeform.includes(ctx.path)){
