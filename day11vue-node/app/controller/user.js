@@ -57,11 +57,12 @@ class UserController extends Controller {
             let user=await service.user.login(username,newPwd);
             console.log('user',user)           
             if(user.length){
-                let token=jwt.sign({username,id:user[0].id},'rich',{expiresIn:60*60})
+                let token=jwt.sign({username,uid:user[0].id},'rich',{expiresIn:60*60})
                 ctx.body={
                     code:2,
                     msg:'登录成功',
-                    token
+                    token,
+                    uid:user[0].id
                 }
             }else{
                 ctx.body={
