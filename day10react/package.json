@@ -42,7 +42,7 @@
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "swiper": "^5.2.0"
+    "swiper": "^6.5.1"
   },
   "proxy": "http://127.0.0.1:7001/"
 }
